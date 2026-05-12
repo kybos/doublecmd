@@ -849,6 +849,10 @@ begin
   FillEncodingMenu(pmEncodingLeft.Items, @SetEncodingLeft, 1);
   FillEncodingMenu(pmEncodingRight.Items, @SetEncodingRight, 2);
   EncodingList.Free;
+
+{$IFDEF DARWIN}
+  self.BorderIcons:= self.BorderIcons - [biMinimize];
+{$ENDIF}
 end;
 
 procedure TfrmDiffer.FormDestroy(Sender: TObject);

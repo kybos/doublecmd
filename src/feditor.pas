@@ -373,6 +373,10 @@ begin
   FCommands := TFormCommands.Create(Self, ActListEdit);
 
   FMultiCaret := TSynPluginMultiCaret.Create(Editor);
+
+{$IFDEF DARWIN}
+  self.BorderIcons:= self.BorderIcons - [biMinimize];
+{$ENDIF}
 end;
 
 procedure TfrmEditor.LoadGlobalOptions;

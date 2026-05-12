@@ -2564,6 +2564,7 @@ begin
                              GraphicFilter(TPortableAnyMapGraphic);
 
 {$IFDEF DARWIN}
+  self.BorderIcons:= self.BorderIcons - [biMinimize];
   self.OnWindowStateChange:= @self.FormWindowStateChange;
 {$ENDIF}
 end;

@@ -738,6 +738,9 @@ begin
   if (ListOffrmFindDlgInstance.Count = 0) then
     Application.AddOnKeyDownBeforeHandler(@FormKeyDown);
 {$ENDIF}
+{$IFDEF DARWIN}
+  self.BorderIcons:= self.BorderIcons - [biMinimize];
+{$ENDIF}
 end;
 
 { TfrmFindDlg.cbUsePluginChange }
