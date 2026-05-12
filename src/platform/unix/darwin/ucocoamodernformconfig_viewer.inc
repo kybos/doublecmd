@@ -568,6 +568,8 @@ const
     title: 'Highlight';
     tips: 'Highlight';
     bordered: True;
+    alternateIconName: '#paintbrush.pointed.fill';
+
     onAction: @viewerHighlightAction;
   );
 
@@ -600,10 +602,12 @@ const
     priority: NSToolbarItemVisibilityPriorityStandard;
     navigational: False;
     appValidates: True;
-    iconName: 'pencil';
+    iconName: 'pencil.tip';
     title: 'Paint';
     tips: 'Paint';
     bordered: True;
+    alternateIconName: '#pencil.tip';
+
     onAction: @viewerPaintAction;
   );
 
@@ -861,19 +865,11 @@ var
   procedure updateHighlightState;
   var
     highlightButton: TToolButton;
-    highlightImageName: String;
-    highlightImage: NSImage;
   begin
     highlightButton:= viewer.btnHightlight;
     item:= TCocoaToolBarUtils.findItemByIdentifier( toolBar , 'ViewerForm.HighLight');
     item.setEnabled( highlightButton.Enabled );
-    if highlightButton.Down then
-      highlightImageName:= 'paintbrush.pointed.fill'
-    else
-      highlightImageName:= 'paintbrush.pointed';
-    highlightImage:= NSImage.imageWithSystemSymbolName_accessibilityDescription(
-      StringToNSString(highlightImageName), nil );
-    item.setImage( highlightImage );
+    TCocoaToolBarItem(item).lclSetState( highlightButton.Down );
 
     item:= TCocoaToolBarUtils.findItemByIdentifier( toolBar , 'ViewerForm.Crop');
     item.setEnabled( highlightButton.Down );
@@ -884,19 +880,11 @@ var
   procedure updatePaintState;
   var
     paintButton: TToolButton;
-    paintImageName: String;
-    paintImage: NSImage;
   begin
     paintButton:= viewer.btnPaint;
     item:= TCocoaToolBarUtils.findItemByIdentifier( toolBar , 'ViewerForm.Paint');
     item.setEnabled( paintButton.Enabled );
-    if paintButton.Down then
-      paintImageName:= 'highlighter'
-    else
-      paintImageName:= 'pencil';
-    paintImage:= NSImage.imageWithSystemSymbolName_accessibilityDescription(
-      StringToNSString(paintImageName), nil );
-    item.setImage( paintImage );
+    TCocoaToolBarItem(item).lclSetState( paintButton.Down );
 
     item:= TCocoaToolBarUtils.findItemByIdentifier( toolBar , 'ViewerForm.PenMode');
     item.setEnabled( paintButton.Down );
