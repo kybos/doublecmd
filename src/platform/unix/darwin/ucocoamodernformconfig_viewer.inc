@@ -429,6 +429,7 @@ const
     title: 'Slide Show';
     tips: 'Slide Show';
     bordered: True;
+    alternateIconName: 'stop';
     onAction: @viewerSlideAction;
 
     showsIndicator: True;
@@ -517,6 +518,8 @@ const
     title: '';
     tips: '';
     bordered: True;
+    alternateIconName: 'pause.fill';
+
     onAction: @viewerGifMoveAction;
   );
 
@@ -807,9 +810,6 @@ var
 
   toolBar: NSToolBar;
   item: NSToolBarItem;
-
-  moveImageName: String;
-  moveImage: NSImage;
 begin
   if vgsIsGif in states then begin
     moveEnabled:= True;
@@ -830,13 +830,7 @@ begin
 
   item:= TCocoaToolBarUtils.findItemByIdentifier( toolBar , 'ViewerForm.GifMove');
   item.setEnabled( moveEnabled );
-  if vgsPlaying in states then
-    moveImageName:= 'pause.fill'
-  else
-    moveImageName:= 'play.fill';
-  moveImage:= NSImage.imageWithSystemSymbolName_accessibilityDescription(
-    StringToNSString(moveImageName), nil );
-  item.setImage( moveImage );
+  TCocoaToolBarItem(item).lclSetState( vgsPlaying in states );
 
   item:= TCocoaToolBarUtils.findItemByIdentifier( toolBar , 'ViewerForm.GifPrev');
   item.setEnabled( prevEnabled );
@@ -929,28 +923,15 @@ end;
 
 procedure TCocoaViewerFormHandler.onSlideStateChanged(const viewer: TfrmViewer);
 var
-  form: TfrmViewer;
   item: NSToolBarItem;
-  imageName: String;
-  image: NSImage;
 begin
-  form:= getCurrentViewerForm;
-  if NOT Assigned(form) then
-    Exit;
-
-  item:= TCocoaToolBarUtils.findItemByIdentifier( form, 'ViewerForm.Slide' );
+  item:= TCocoaToolBarUtils.findItemByIdentifier( viewer, 'ViewerForm.Slide' );
   if item = nil then
     Exit;
 
-  if form.btnSlideShow.Down then
-    imageName:= 'pause'
-  else
-    imageName:= 'play';
-  image:= NSImage.imageWithSystemSymbolName_accessibilityDescription(
-    StringToNSString(imageName), nil );
-  item.setImage( image );
+  TCocoaToolBarItem(item).lclSetState( viewer.btnSlideShow.Down );
 
-  form.TimerViewer.Enabled:= form.btnSlideShow.Down;
+  viewer.TimerViewer.Enabled:= viewer.btnSlideShow.Down;
 end;
 
 procedure TCocoaViewerFormHandler.onPenWidthChanged( Sender: TObject );
